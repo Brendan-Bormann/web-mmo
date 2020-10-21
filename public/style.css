@@ -1,0 +1,53 @@
+body {
+    height: 100vh;
+    width: 100vw;
+
+    padding: 0;
+    margin: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    background-color: rgb(31, 31, 31);
+}
+
+.controls {
+    position: fixed;
+    top: 0;
+    left: 50%;
+
+    width: 350px;
+    margin-left: -175px;
+
+    padding: 10px 0px;
+
+    background: rgba(34, 34, 34, 0.25);
+    border-radius: 0 0 5px 5px;
+
+    color: white;
+    text-align: center;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+button {
+    width: 100pt;
+    height: 25pt;
+
+    background-color: rgba(34, 34, 34, 0.5);
+    color: white;
+
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 2pt;
+
+    margin: 5pt;
+}
+
+button:active {
+    background-color: rgb(61, 61, 61);
+}
+
+#connection-status {
+    text-decoration: underline;
+}
