@@ -12,7 +12,7 @@ function connect() {
     let localhost = '127.0.0.1';
     let ip = '24.9.96.176';
 
-    socket = new WebSocket(`ws://${ip}:6969`);
+    socket = new WebSocket(`ws://${localhost}:6969`);
 
     let updateCycle;
 
@@ -60,14 +60,39 @@ function disconnect() {
     }
 }
 
-document.addEventListener("keypress", (event) => {
+let keysDown = [];
 
-    console.log(PlayerList);
-
+document.addEventListener("keydown", (event) => {
     if (socket !== undefined) {
-        socket.send(`input ${event.key}`);
+        if (keysDown.includes(event.key)) return;
+
+        keysDown.push(event.key);
+
+        socket.send(`input ${event.key} down`);
     }
 });
+
+document.addEventListener("keyup", (event) => {
+    if (socket !== undefined) {
+
+        keysDown.remove(event.key);
+
+        socket.send(`input ${event.key} up`);
+    }
+});
+
+
+Array.prototype.remove = function () {
+    var what, a = arguments, L = a.length, ax;
+    while (L && this.length) {
+        what = a[--L];
+        while ((ax = this.indexOf(what)) !== -1) {
+            this.splice(ax, 1);
+        }
+    }
+    return this;
+};
+
 
 
 let app = new PIXI.Application({
@@ -79,8 +104,7 @@ let app = new PIXI.Application({
 });
 
 app.renderer.backgroundColor = 0x061639;
-app.renderer.autoResize = true;
-app.renderer.resize(window.innerWidth, window.innerHeight);
+app.renderer.resize(1600, 900);
 
 let gameArea = document.getElementById("gameArea");
 gameArea.appendChild(app.view);
@@ -101,7 +125,7 @@ function setup() {
         let playerGameObject = new PIXI.Sprite(PIXI.loader.resources["./assets/white-sprite.png"].texture);
 
         playerGameObject.id = player.id;
-        
+
         playerGameObject.position.set(player.x, player.y)
 
         app.stage.addChild(playerGameObject);
@@ -109,23 +133,22 @@ function setup() {
         playerObjects.push(playerGameObject);
     });
 
-    console.log(playerObjects);
-
     app.ticker.add(delta => gameLoop(delta));
 }
 
 function gameLoop(delta) {
 
     for (let i = 0; i < PlayerList.length; i++) {
+
         if (playerObjects[i] === undefined) {
             let playerGameObject = new PIXI.Sprite(PIXI.loader.resources["./assets/white-sprite.png"].texture);
 
             playerGameObject.id = PlayerList[i].id;
-            
+
             playerGameObject.position.set(PlayerList[i].x, PlayerList[i].y)
-    
+
             app.stage.addChild(playerGameObject);
-    
+
             playerObjects.push(playerGameObject);
         } else {
             playerObjects[i].position.x = PlayerList[i].x;

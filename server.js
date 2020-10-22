@@ -54,22 +54,35 @@ class Player {
 
     speed = 5;
 
-    Move = (direction) => {
-        switch(direction) {
+    up = false;
+    down = false;
+    left = false;
+    right = false;
+
+    SetInput = (key, status) => {
+        switch(key) {
+            case "p": {
+                console.log(`Position (${this.x}, ${this.y})`);
+                break;
+            };
             case "w": {
-                this.y -= this.speed
+                if (status === "down") this.up = true;
+                if (status === "up") this.up = false;
                 break;
             };
             case "a": {
-                this.x -= this.speed
+                if (status === "down") this.left = true;
+                if (status === "up") this.left = false;
                 break;
             };
             case "s": {
-                this.y += this.speed
+                if (status === "down") this.down = true;
+                if (status === "up") this.down = false;
                 break;
             };
             case "d": {
-                this.x += this.speed
+                if (status === "down") this.right = true;
+                if (status === "up") this.right = false;
                 break;
             };
         }
@@ -89,9 +102,21 @@ function MessageHandler(socket, incMessage, myPlayer) {
 
         for (let i = 0; i < PlayerList.length; i++) {
             if (PlayerList[i].id === myPlayer.id){
-                PlayerList[i].Move(message.split(' ')[1]);
+                PlayerList[i].SetInput(message.split(' ')[1], message.split(' ')[2]);
             }
         }
     }
-
 }
+
+function EventLoop() {
+    let gravity = 1;
+
+    PlayerList.forEach(player => {
+        if (player.up) player.y -= player.speed;
+        if (player.down) player.y += player.speed;
+        if (player.left) player.x -= player.speed;
+        if (player.right) player.x += player.speed;
+    });
+}
+
+setInterval(EventLoop, 10);
