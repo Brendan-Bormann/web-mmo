@@ -60,7 +60,7 @@ class Player {
     right = false;
 
     SetInput = (key, status) => {
-        switch(key) {
+        switch (key) {
             case "p": {
                 console.log(`Position (${this.x}, ${this.y})`);
                 break;
@@ -101,7 +101,7 @@ function MessageHandler(socket, incMessage, myPlayer) {
     if (message.split(' ')[0] === "input") {
 
         for (let i = 0; i < PlayerList.length; i++) {
-            if (PlayerList[i].id === myPlayer.id){
+            if (PlayerList[i].id === myPlayer.id) {
                 PlayerList[i].SetInput(message.split(' ')[1], message.split(' ')[2]);
             }
         }
@@ -112,6 +112,8 @@ function EventLoop() {
     let gravity = 1;
 
     PlayerList.forEach(player => {
+
+        // move players
         if (player.up) player.y -= player.speed;
         if (player.down) player.y += player.speed;
         if (player.left) player.x -= player.speed;

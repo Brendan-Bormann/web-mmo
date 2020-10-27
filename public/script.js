@@ -12,7 +12,7 @@ function connect() {
     let localhost = '127.0.0.1';
     let ip = '24.9.96.176';
 
-    socket = new WebSocket(`ws://${localhost}:6969`);
+    socket = new WebSocket(`ws://${ip}:6969`);
 
     let updateCycle;
 
